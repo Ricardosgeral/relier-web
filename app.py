@@ -9,12 +9,28 @@ from dash.dependencies import Input, Output, State, Event
 from plotly.graph_objs import *
 import numpy as np
 import pandas as pd
+import pandas.io.sql as psql
 import os
 import read_ini as rd
+import psycopg2 as p
 
-ini = rd.read_ini_path()  # read the lastpath of CSV from the ini file
-data = ini[0]
-interval = int(ini[1])*1000 # mseconds
+
+#credentials of database in Heroku
+Host = 'ec2-23-21-216-174.compute-1.amazonaws.com'
+Database = 'dbtnt5r45pnmr4'
+User = 'jqgxlpscxtevqg'
+Port = '5432'
+Password = '1430e8562fbf6d737b0561164e8f88c9d8622e3ff866e434705bd29d9fa2cdf4'
+URI = 'postgres://jqgxlpscxtevqg:1430e8562fbf6d737b0561164e8f88c9d8622e3ff866e434705bd29d9fa2cdf4@ec2-23-21-216-174.compute-1.amazonaws.com:5432/dbtnt5r45pnmr4'
+Heroku_CLI = 'heroku pg:psql postgresql-transparent-52313 --app relier-dash'
+
+#connect to the data base
+con = p.connect(dbname=Database, user=User, password=Password, host=Host)
+
+df_inputs = psql.read_sql('SELECT * FROM testinputs;', con)
+
+interval = (df_inputs['rec_interval'][0])*1000 # mseconds
+
 
 app = dash.Dash()
 server = app.server
@@ -48,15 +64,26 @@ app.layout = html.Div([
 
 
 
+#
+
+
 @app.callback(Output('plots', 'figure'), [Input('data-update', 'n_intervals')])
 def plots(interval):
 
+
+
     df = pd.read_csv(data)
+
+
+
 
     df['date_time']= df['date'] + ' ' + df['time']
     df['date_time']= pd.to_datetime(df['date_time'])  # convert string to datatime type
     df['duration']=df['date_time']-df.loc[0,'date_time']  # duration in timedelta
     df['duration'] = df['duration']/ np.timedelta64(1, 'm') # duration in minutes
+
+
+
 
     flow = Scatter(
         x=df['duration'],
