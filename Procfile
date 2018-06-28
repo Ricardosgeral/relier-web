@@ -1,1 +1,1 @@
-web: gunicorn relier1d:server
+web: gunicorn app:server
