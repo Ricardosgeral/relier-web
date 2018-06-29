@@ -5,46 +5,51 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output, State, Event
+from dash.dependencies import Input, Output
 from plotly.graph_objs import *
 import numpy as np
-import pandas as pd
 import pandas.io.sql as psql
 import os
-import read_ini as rd
 import psycopg2 as p
-
-
-#credentials of database in Heroku
-Host = 'ec2-23-21-216-174.compute-1.amazonaws.com'
-Database = 'dbtnt5r45pnmr4'
-User = 'jqgxlpscxtevqg'
-Port = '5432'
-Password = '1430e8562fbf6d737b0561164e8f88c9d8622e3ff866e434705bd29d9fa2cdf4'
-URI = 'postgres://jqgxlpscxtevqg:1430e8562fbf6d737b0561164e8f88c9d8622e3ff866e434705bd29d9fa2cdf4@ec2-23-21-216-174.compute-1.amazonaws.com:5432/dbtnt5r45pnmr4'
-Heroku_CLI = 'heroku pg:psql postgresql-transparent-52313 --app relier-dash'
-
-#connect to the data base
-con = p.connect(dbname=Database, user=User, password=Password, host=Host)
-
-df_inputs = psql.read_sql('SELECT * FROM testinputs;', con)
-
-interval = (df_inputs['rec_interval'][0])*1000 # mseconds
-
+from config import Config
 
 app = dash.Dash()
 server = app.server
+app.title='relier web'
+
+
+#connect to the data base
+con = p.connect(dbname=os.environ(Config.Database), user=os.environ(Config.User), password=os.environ(Config.Password), host=os.environ(Config.Host))
+
+df_inputs = psql.read_sql('SELECT * FROM testinputs;', con)
+
+#interval = (df_inputs['rec_interval'][0])*1000 # mseconds
+interval = 8*1000
+test_name = df_inputs['test_name'][0]
+started = df_inputs['start'][0]
+test_type = df_inputs['test_type'][0]
+
+if test_type ==1:
+    test_type_name = 'FLET'
+elif test_type ==2:
+    test_type_name = 'CFET'
+elif test_type ==3:
+    test_type_name = 'HET'
+else:
+    test_type_name = "Other"
+
+
 
 app.layout = html.Div([
     html.Div([
-        html.H2("Sensor live data"),
+        html.H2("Sensor data streaming"),
         html.Img(src="https://raw.githubusercontent.com/Ricardosgeral/relier/master/Nextion/Illustrator/relier_dash-banner_.png"),
     ], className='banner'),
 
     html.Div([
         html.Div([
-            html.H6(data) # place filename and path of the csv file
-        ], className='Title'),
+            html.H6("Name: {}  (Type: {})   ----> Started:  {:%Y-%m-%d, %H:%M} ".format(test_name, test_type_name, started)) # place filename and path of the csv file
+        ], className='row'),
     ], className='row wind-speed-row'),
 
     html.Div([
@@ -63,30 +68,17 @@ app.layout = html.Div([
           'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)'})
 
 
-
-#
-
-
 @app.callback(Output('plots', 'figure'), [Input('data-update', 'n_intervals')])
 def plots(interval):
 
+    df = psql.read_sql('SELECT * FROM testdata;', con) # outputs
 
 
-    df = pd.read_csv(data)
-
-
-
-
-    df['date_time']= df['date'] + ' ' + df['time']
-    df['date_time']= pd.to_datetime(df['date_time'])  # convert string to datatime type
-    df['duration']=df['date_time']-df.loc[0,'date_time']  # duration in timedelta
-    df['duration'] = df['duration']/ np.timedelta64(1, 'm') # duration in minutes
-
-
+    x= df['duration'] = df['duration']/ np.timedelta64(1, 'm') # duration in minutes
 
 
     flow = Scatter(
-        x=df['duration'],
+        x=x,
         y=df['flow'],
         name='Flow rate ',
         mode='lines+markers',
@@ -99,8 +91,8 @@ def plots(interval):
     )
 
     volume = Scatter(
-        x=df['duration'],
-        y=df['liters'],
+        x=x,
+        y=df['volume'],
         name='Total volume',
         mode='lines',
         line=Line(color='green', width= 1.5, shape='linear', dash = 'solid'),
@@ -112,8 +104,8 @@ def plots(interval):
     )
 
     up_press = Scatter(
-        x=df['duration'],
-        y=df['mmH2O_up'],
+        x=x,
+        y=df['mmh2o_up'],
         name='Ups pressure',
         mode='lines+markers',
         line=Line(color='blue', width= 1.5, shape='linear', dash = 'solid'),
@@ -126,8 +118,8 @@ def plots(interval):
     )
 
     int_press = Scatter(
-        x=df['duration'],
-        y=df['mmH2O_int'],
+        x=x,
+        y=df['mmh2o_int'],
         name='Int pressure',
         mode='lines+markers',
         line=Line(color='green', width= 1.5, shape='linear', dash = 'solid'),
@@ -140,8 +132,8 @@ def plots(interval):
     )
 
     down_press = Scatter(
-        x=df['duration'],
-        y=df['mmH2O_down'],
+        x=x,
+        y=df['mmh2o_down'],
         mode='lines+markers',
         line=Line(color='orange', width= 1.5, shape='linear', dash = 'solid'),
         marker=Marker(color='orange', symbol='square-open', opacity=0.6, size=6,
@@ -154,8 +146,8 @@ def plots(interval):
     )
 
     turbidity = Scatter(
-        x=df['duration'],
-        y=df['ntu_turb'],
+        x=x,
+        y=df['turb'],
         mode='lines+markers',
         line=Line(color='blue', width=1.5, shape='linear', dash='solid'),
         marker=Marker(color='blue', symbol='diamond-open', opacity=0.6, size=6,
@@ -237,7 +229,7 @@ def plots(interval):
         yaxis3=dict(
             autorange=True,
             #range=[min(min(df['mmH2O_up']),min(df['mmH2O_int']),min(df['mmH2O_down'])),
-            #       max(max(df['mmH2O_up']), max(df['mmH2O_int']), max(df['mmH2O_down']))],            showgrid=False,
+            #       max(max(df['mmH2O_up']), max(df['mmH2O_int']), max(df['mmH2O_down']))],showgrid=False,
             showline=True,
             linecolor='#adadad',
             linewidth=2,
