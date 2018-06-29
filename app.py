@@ -9,9 +9,25 @@ from dash.dependencies import Input, Output
 from plotly.graph_objs import *
 import numpy as np
 import pandas.io.sql as psql
-import os
 import psycopg2 as p
-from config import Config
+import urllib.parse as urlparse
+import os
+
+url = urlparse.urlparse(os.environ['DATABASE_URL'])
+dbname = url.path[1:]
+user = url.username
+password = url.password
+host = url.hostname
+port = url.port
+
+con = p.connect(
+            dbname=dbname,
+            user=user,
+            password=password,
+            host=host,
+            port=port
+            )
+
 
 app = dash.Dash()
 server = app.server
@@ -19,7 +35,6 @@ app.title='relier web'
 
 
 #connect to the data base
-con = p.connect(dbname=os.environ(Config.Database), user=os.environ(Config.User), password=os.environ(Config.Password), host=os.environ(Config.Host))
 
 df_inputs = psql.read_sql('SELECT * FROM testinputs;', con)
 
