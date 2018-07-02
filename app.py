@@ -28,11 +28,9 @@ con = p.connect(
             port=port
             )
 
-
 app = dash.Dash()
 server = app.server
 app.title='relier web'
-
 
 #connect to the data base
 
@@ -53,8 +51,7 @@ elif test_type ==3:
 else:
     test_type_name = "Other"
 
-
-
+###########################################
 app.layout = html.Div([
     html.Div([
         html.H2("Sensor data streaming"),
