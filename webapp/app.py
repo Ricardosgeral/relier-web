@@ -34,6 +34,32 @@ app.title='relier web'
 
 #connect to the data base
 
+cur= con.cursor() # as list
+
+try:
+    cur.execute("CREATE TABLE testdata ("
+                 "id serial PRIMARY KEY, "
+                 "date_time timestamp,"
+                 "duration interval, "
+                 "mmH2O_up integer, "
+                 "mmH2O_int integer, "
+                 "mmH2O_down integer, "
+                 "turb float, "
+                 "flow float, "
+                 "volume integer);")
+    con.commit()
+except:
+    cur.execute('rollback;')
+
+#create a table to parse test relevant inputs to  heroku app
+try:
+    cur.execute("CREATE TABLE testinputs (start timestamp, test_name varchar, rec_interval integer, test_type integer, "
+                "mu float, bu float,mi float, bi float,md float, bd float,mturb float, bturb float);")
+    con.commit()
+except:
+    cur.execute('rollback;')
+
+
 df_inputs = psql.read_sql('SELECT * FROM testinputs;', con)
 
 #interval = (df_inputs['rec_interval'][0])*1000 # mseconds
