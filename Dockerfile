@@ -1,4 +1,4 @@
-FROM heroku/miniconda:3
+FROM heroku/miniconda
 
 # Grab requirements.txt.
 ADD ./webapp/requirements.txt /tmp/requirements.txt
@@ -10,7 +10,7 @@ RUN pip install -qr /tmp/requirements.txt
 ADD ./webapp /opt/webapp/
 WORKDIR /opt/webapp
 
-#RUN conda install scikit-learn
+#RUN apt-get to install pandas (and dependancy numpy)
 RUN apt-get update && apt-get install -y \
     python3-pandas \
 
