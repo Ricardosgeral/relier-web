@@ -10,8 +10,8 @@ RUN pip install -r /tmp/requirements.txt
 ADD ./webapp /opt/webapp/
 WORKDIR /opt/webapp
 
-#RUN apt-get to install pandas (and dependancy numpy)
+#install numpy and pandas using conda
 RUN conda install numpy
 RUN conda install pandas
 
-CMD gunicorn --bind 0.0.0.0:$PORT wsgi
+#CMD gunicorn --bind 0.0.0.0:$PORT wsgi
