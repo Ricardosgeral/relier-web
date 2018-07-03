@@ -109,12 +109,12 @@ app.layout = html.Div([
 @app.callback(Output('plots', 'figure'), [Input('data-update', 'n_intervals')])
 def plots(interval):
 
-    df = psql.read_sql('SELECT * FROM testdata;', con) # outputs
+    df = psql.read_sql('SELECT * FROM testdata ORDER BY id;', con) # outputs
 
 
     flow = Scatter(
-        x=df['duration']/ np.timedelta64(1, 'm'),
         y=df['flow'],
+        x=df['duration']/ np.timedelta64(1, 'm'),
         name='Flow rate ',
         mode='lines+markers',
         line=Line(color='blue', width= 1.5, shape='linear', dash = 'solid'),
@@ -126,7 +126,7 @@ def plots(interval):
     )
 
     volume = Scatter(
-        x=x,
+        x=df['duration']/ np.timedelta64(1, 'm'),
         y=df['volume'],
         name='Total volume',
         mode='lines',
@@ -167,7 +167,7 @@ def plots(interval):
     )
 
     down_press = Scatter(
-        x=x,
+        x=df['duration']/ np.timedelta64(1, 'm'),
         y=df['mmh2o_down'],
         mode='lines+markers',
         line=Line(color='orange', width= 1.5, shape='linear', dash = 'solid'),
