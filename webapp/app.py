@@ -29,7 +29,7 @@ con = p.connect(
             )
 
 app = dash.Dash()
-server = app.server
+#server = app.server
 app.title='relier web'
 
 #connect to the data base
