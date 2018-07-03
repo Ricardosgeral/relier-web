@@ -112,11 +112,8 @@ def plots(interval):
     df = psql.read_sql('SELECT * FROM testdata;', con) # outputs
 
 
-    x= df['duration'] = df['duration']/ np.timedelta64(1, 'm') # duration in minutes
-
-
     flow = Scatter(
-        x=x,
+        x=df['duration']/ np.timedelta64(1, 'm'),
         y=df['flow'],
         name='Flow rate ',
         mode='lines+markers',
@@ -142,7 +139,7 @@ def plots(interval):
     )
 
     up_press = Scatter(
-        x=x,
+        x=df['duration']/ np.timedelta64(1, 'm'),
         y=df['mmh2o_up'],
         name='Ups pressure',
         mode='lines+markers',
@@ -156,7 +153,7 @@ def plots(interval):
     )
 
     int_press = Scatter(
-        x=x,
+        x=df['duration']/ np.timedelta64(1, 'm'),
         y=df['mmh2o_int'],
         name='Int pressure',
         mode='lines+markers',
@@ -184,7 +181,7 @@ def plots(interval):
     )
 
     turbidity = Scatter(
-        x=x,
+        x=df['duration']/ np.timedelta64(1, 'm'),
         y=df['turb'],
         mode='lines+markers',
         line=Line(color='blue', width=1.5, shape='linear', dash='solid'),
