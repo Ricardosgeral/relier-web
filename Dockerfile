@@ -14,4 +14,4 @@ WORKDIR /opt/webapp
 RUN conda install numpy
 RUN conda install pandas
 
-#CMD gunicorn --bind 0.0.0.0:$PORT wsgi
+CMD gunicorn --bind 0.0.0.0:$PORT wsgi
