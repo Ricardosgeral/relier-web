@@ -86,34 +86,35 @@ def plots(interval):
 
     df = psql.read_sql('SELECT * FROM testdata ORDER BY id;', con) # outputs
 
+    volume = Scatter(
+        x=df['duration'] / np.timedelta64(1, 'm'),
+        y=df['volume'],
+        name='Total volume',
+        opacity=0.5,
+        mode='lines',
+        line=Line(color='blue', width=1.5, shape='linear', dash='solid'),
+        connectgaps=False,
+        fill='tozeroy',
+        fillcolor='lightblue',
+        yaxis='y2',
+        legendgroup='flowmeter'
+    )
 
     flow = Scatter(
         y=df['flow'],
         x=df['duration']/ np.timedelta64(1, 'm'),
         name='Flow rate ',
         mode='lines+markers',
-        line=Line(color='blue', width= 1.5, shape='linear', dash = 'solid'),
+        line=Line(color='green', width= 1.5, shape='linear', dash = 'solid'),
         marker=Marker(color='blue', symbol='circle-open', opacity=0.7, size=6,
-                      line=dict(width=1.5, color='blue')
+                      line=dict(width=1.5, color='green')
                       ), #https://plot.ly/python/reference/#scatter-marker
         connectgaps = False,
         legendgroup = 'flowmeter',
 
     )
 
-    volume = Scatter(
-        x=df['duration']/ np.timedelta64(1, 'm'),
-        y=df['volume'],
-        name='Total volume',
-        opacity = 0.5,
-        mode='lines',
-        line=Line(color='green', width= 1.5, shape='linear', dash = 'solid'),
-        connectgaps=False,
-        fill='tozeroy',
-        fillcolor='lightgreen',
-        yaxis='y2',
-        legendgroup = 'flowmeter'
-    )
+
 
     up_press = Scatter(
         x=df['duration']/ np.timedelta64(1, 'm'),
