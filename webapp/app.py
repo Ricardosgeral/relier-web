@@ -86,34 +86,36 @@ def plots(interval):
 
     df = psql.read_sql('SELECT * FROM testdata ORDER BY id;', con) # outputs
 
-    volume = Scatter(
-        x=df['duration'] / np.timedelta64(1, 'm'),
-        y=df['volume'],
-        name='Total volume',
-        opacity=0.5,
-        mode='lines',
-        line=Line(color='blue', width=1.5, shape='linear', dash='solid'),
-        connectgaps=False,
-        fill='tozeroy',
-        fillcolor='lightblue',
-        yaxis='y2',
-        legendgroup='flowmeter'
-    )
+
 
     flow = Scatter(
         y=df['flow'],
         x=df['duration']/ np.timedelta64(1, 'm'),
         name='Flow rate ',
         mode='lines+markers',
-        line=Line(color='green', width= 1.5, shape='linear', dash = 'solid'),
-        marker=Marker(color='blue', symbol='circle-open', opacity=0.7, size=6,
+        line=Line(color='green', width= 2.0, shape='linear', dash = 'solid'),
+        marker=Marker(color='green', symbol='circle-open', opacity=0.7, size=6.5,
                       line=dict(width=1.5, color='green')
                       ), #https://plot.ly/python/reference/#scatter-marker
         connectgaps = False,
         legendgroup = 'flowmeter',
+        yaxis='y2',
 
     )
 
+    volume = Scatter(
+        x=df['duration'] / np.timedelta64(1, 'm'),
+        y=df['volume'],
+        name='Total volume',
+        mode='lines',
+        opacity = 0.5,
+        line=Line(color='blue', width=1.5, shape='linear', dash='solid'),
+        connectgaps=False,
+        fill='tonexty',
+        fillcolor='#f4fbff',
+        legendgroup='flowmeter',
+
+    )
 
 
     up_press = Scatter(
@@ -122,7 +124,7 @@ def plots(interval):
         name='Ups pressure',
         mode='lines+markers',
         line=Line(color='blue', width= 1.5, shape='linear', dash = 'solid'),
-        marker=Marker(color='blue', symbol='square-open', opacity=0.6, size=6,
+        marker=Marker(color='blue', symbol='square-open', opacity=0.6, size=6.5,
                       line=dict(width=1.5, color='blue')
                       ),
         xaxis = 'x',
@@ -136,7 +138,7 @@ def plots(interval):
         name='Int pressure',
         mode='lines+markers',
         line=Line(color='green', width= 1.5, shape='linear', dash = 'solid'),
-        marker=Marker(color='green', symbol='square-open', opacity=0.6, size=6,
+        marker=Marker(color='green', symbol='square-open', opacity=0.6, size=6.5,
                       line=dict(width=1.5, color='green')
                       ),
         xaxis = 'x',
@@ -149,7 +151,7 @@ def plots(interval):
         y=df['mmh2o_down'],
         mode='lines+markers',
         line=Line(color='orange', width= 1.5, shape='linear', dash = 'solid'),
-        marker=Marker(color='orange', symbol='square-open', opacity=0.6, size=6,
+        marker=Marker(color='orange', symbol='square-open', opacity=0.6, size=6.5,
                       line=dict(width=1.5, color='orange')
                       ),
         name='Dwn pressure',
@@ -163,24 +165,22 @@ def plots(interval):
         y=df['turb'],
         mode='lines+markers',
         line=Line(color='blue', width=1.5, shape='linear', dash='solid'),
-        marker=Marker(color='blue', symbol='diamond-open', opacity=0.6, size=6,
+        marker=Marker(color='blue', symbol='diamond-open', opacity=0.6, size=6.5,
                       line=dict(width=1.5, color='blue')
                       ),
-        name='Turbidity ',
+        name='Turbidity',
         xaxis='x',
         yaxis='y4',
-        legendgroup='turbiditymeter',
+        legendgroup='turbidity_meter',
     )
 
-    traces = [flow, volume, up_press, int_press, down_press, turbidity]
+    traces = [flow, volume, down_press, int_press, up_press, turbidity]
 
     layout = Layout(
         height=1200,
-        #autosize=True,
         xaxis=dict(
             autorange=True,
             rangemode='nonnegative',
-            #range=[0, max(df['duration'])],
             showgrid=True,
             showline=True,
             linecolor='#adadad',
@@ -209,6 +209,7 @@ def plots(interval):
         ),
         yaxis=dict(
             autorange=True,
+            rangemode='nonnegative',
             showgrid=True,
             ticks='inside',
             tickcolor='#adadad',
@@ -217,25 +218,30 @@ def plots(interval):
             linecolor='#adadad',
             linewidth=2,
             fixedrange=False,
-            zeroline=False,
-            title='Flow rate (l/min)',
-            domain =[0.657,0.96]
+            zeroline=True,
+            title='Volume (liters)',
+            domain =[0.657,0.96],
+            side = 'right'
+
+
         ),
         yaxis2=dict(
             autorange=True,
+            rangemode='nonnegative',
             showgrid=True,
             showline=True,
             linecolor='#adadad',
             linewidth=2,
             fixedrange=False,
             zeroline=False,
-            title='Volume (l)',
+            title='Flow rate (liters/min)',
             overlaying='y',
-            side='right',
+            side='left',
             ticks='inside',
             tickcolor='#adadad',
             tickwidth=2,
-            mirror = 'allticks',
+            mirror = 'False',
+
         ),
         yaxis3=dict(
             autorange=True,
