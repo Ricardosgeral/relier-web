@@ -13,6 +13,7 @@ import psycopg2 as p
 import urllib.parse as urlparse
 import os
 
+
 url = urlparse.urlparse(os.environ['DATABASE_URL'])
 dbname = url.path[1:]
 user = url.username
@@ -20,47 +21,21 @@ password = url.password
 host = url.hostname
 port = url.port
 
+
+
 con = p.connect(
             dbname=dbname,
             user=user,
             password=password,
             host=host,
-            port=port
+            #port=port
             )
 
 app = dash.Dash()
 #server = app.server
 app.title='relier web'
 
-#connect to the data base
-
-# cur= con.cursor() # as list
-#
-# try:
-#     cur.execute("CREATE TABLE testdata ("
-#                  "id serial PRIMARY KEY, "
-#                  "date_time timestamp,"
-#                  "duration interval, "
-#                  "mmH2O_up integer, "
-#                  "mmH2O_int integer, "
-#                  "mmH2O_down integer, "
-#                  "turb float, "
-#                  "flow float, "
-#                  "volume integer);")
-#     con.commit()
-# except:
-#     cur.execute('rollback;')
-#
-# #create a table to parse test relevant inputs to  heroku app
-# try:
-#     cur.execute("CREATE TABLE testinputs (start timestamp, test_name varchar, rec_interval integer, test_type integer, "
-#                 "mu float, bu float,mi float, bi float,md float, bd float,mturb float, bturb float);")
-#     con.commit()
-# except:
-#     cur.execute('rollback;')
-
-
-df_inputs = psql.read_sql('SELECT * FROM testinputs;', con)
+df_inputs = psql.read_sql('SELECT * FROM testinputs ORDER BY test_name;', con)
 
 #interval = (df_inputs['rec_interval'][0])*1000 # mseconds
 interval = 8*1000
@@ -123,16 +98,18 @@ def plots(interval):
                       ), #https://plot.ly/python/reference/#scatter-marker
         connectgaps = False,
         legendgroup = 'flowmeter',
+
     )
 
     volume = Scatter(
         x=df['duration']/ np.timedelta64(1, 'm'),
         y=df['volume'],
         name='Total volume',
+        opacity = 0.5,
         mode='lines',
         line=Line(color='green', width= 1.5, shape='linear', dash = 'solid'),
         connectgaps=False,
-        fill='tozerox',
+        fill='tozeroy',
         fillcolor='lightgreen',
         yaxis='y2',
         legendgroup = 'flowmeter'
@@ -197,7 +174,7 @@ def plots(interval):
     traces = [flow, volume, up_press, int_press, down_press, turbidity]
 
     layout = Layout(
-        height=1000,
+        height=1200,
         #autosize=True,
         xaxis=dict(
             autorange=True,
@@ -220,7 +197,7 @@ def plots(interval):
             showticklabels=True,
             title='Duration (min)',
             showaxeslabels=True,
-            #side= 'top',
+            side= 'top',
             #titlefont=dict(
                 #family='Arial, sans-serif',
                 #size=18,
@@ -231,7 +208,6 @@ def plots(interval):
         ),
         yaxis=dict(
             autorange=True,
-            #range=[min(df['flow']),max(df['flow'])],
             showgrid=True,
             ticks='inside',
             tickcolor='#adadad',
@@ -242,11 +218,10 @@ def plots(interval):
             fixedrange=False,
             zeroline=False,
             title='Flow rate (l/min)',
-            domain =[0.72,1]
+            domain =[0.657,0.96]
         ),
         yaxis2=dict(
             autorange=True,
-            #range=[min(df['liters']), max(df['liters'])],
             showgrid=True,
             showline=True,
             linecolor='#adadad',
@@ -263,15 +238,13 @@ def plots(interval):
         ),
         yaxis3=dict(
             autorange=True,
-            #range=[min(min(df['mmH2O_up']),min(df['mmH2O_int']),min(df['mmH2O_down'])),
-            #       max(max(df['mmH2O_up']), max(df['mmH2O_int']), max(df['mmH2O_down']))],showgrid=False,
             showline=True,
             linecolor='#adadad',
             linewidth=2,
             fixedrange=False,
             zeroline=False,
             title='Piezometric pressure (mmH2O)',
-            domain=[0.35, 0.63],
+            domain=[0.328, 0.632],
             ticks='inside',
             tickcolor='#adadad',
             tickwidth=2,
@@ -280,14 +253,13 @@ def plots(interval):
         ),
         yaxis4=dict(
             autorange=True,
-           #range=[min(df['ntu_turb']),max(df['ntu_turb'])],
             showline=True,
             linecolor='#adadad',
             linewidth=2,
             fixedrange=False,
             zeroline=False,
             title='Turbidity (NTU)',
-            domain = [0, 0.3],
+            domain = [0, 0.303],
             ticks='inside',
             tickcolor='#adadad',
             tickwidth=2,
@@ -299,9 +271,9 @@ def plots(interval):
             l=60,
             r=60,
             b=20,
-            pad=2 # distance between graph and axis numbers
+            pad=1.5 # distance between graph and axis numbers
         ),
-        legend = dict(x=0.05,y=5.5, orientation="h"),
+        legend = dict(x=-0.08, y=1.075, orientation="h"),
         #paper_bgcolor='#7f7f7f',
         #plot_bgcolor='#f6f6f6',
     )
