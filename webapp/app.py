@@ -13,7 +13,6 @@ import psycopg2 as p
 import urllib.parse as urlparse
 import os
 
-
 url = urlparse.urlparse(os.environ['DATABASE_URL'])
 dbname = url.path[1:]
 user = url.username
@@ -21,72 +20,69 @@ password = url.password
 host = url.hostname
 port = url.port
 
-
-
 con = p.connect(
             dbname=dbname,
             user=user,
             password=password,
             host=host,
-            #port=port
+            port=port
             )
 
 app = dash.Dash()
-#server = app.server
-app.title='relier web'
+app.title='Relier web stream'
 
-df_inputs = psql.read_sql('SELECT * FROM testinputs ORDER BY test_name;', con)
-
-#interval = (df_inputs['rec_interval'][0])*1000 # mseconds
-interval = 8*1000
-test_name = df_inputs['test_name'][0]
-started = df_inputs['start'][0]
-test_type = df_inputs['test_type'][0]
-
-if test_type ==1:
-    test_type_name = 'FLET'
-elif test_type ==2:
-    test_type_name = 'CFET'
-elif test_type ==3:
-    test_type_name = 'HET'
-else:
-    test_type_name = "Other"
-
-###########################################
-app.layout = html.Div([
-    html.Div([
-        html.H2("Sensor data streaming"),
-        html.Img(src="https://raw.githubusercontent.com/Ricardosgeral/relier/master/Nextion/Illustrator/relier_dash-banner_.png"),
-    ], className='banner'),
-
-    html.Div([
-        html.Div([
-            html.H6("Name: {}  (Type: {})   ----> Started:  {:%Y-%m-%d, %H:%M} ".format(test_name, test_type_name, started)) # place filename and path of the csv file
-        ], className='row'),
-    ], className='row wind-speed-row'),
-
-    html.Div([
-        html.Div([
-            html.H3("Plots")
-        ], className='Title'),
-        html.Div([
-            dcc.Graph(id='plots'),
-        ], className='row'),
-
-        dcc.Interval(id='data-update', interval=interval, n_intervals=0),
-    ], className='row wind-speed-row'),
-],
-    style={'padding': '0px 10px 15px 10px',
-          'marginLeft': 'auto', 'marginRight': 'auto', "width": "900px",
-          'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)'})
+interval = 5*1000
 
 
 @app.callback(Output('plots', 'figure'), [Input('data-update', 'n_intervals')])
 def plots(interval):
 
+    df_inputs = psql.read_sql('SELECT * FROM testinputs ORDER BY test_name;', con)
     df = psql.read_sql('SELECT * FROM testdata ORDER BY id;', con) # outputs
 
+    test_name = df_inputs['test_name'][0]
+    started = df_inputs['start'][0]
+    test_type = df_inputs['test_type'][0]
 
+    if test_type == 1:
+        test_type_name = 'FLET'
+    elif test_type == 2:
+        test_type_name = 'CFET'
+    elif test_type == 3:
+        test_type_name = 'HET'
+    else:
+        test_type_name = "Other"
+
+    ###########################################
+    app.layout = html.Div([
+        html.Div([
+            html.H2("Sensor data streaming"),
+            html.Img(
+                src="https://raw.githubusercontent.com/Ricardosgeral/relier/master/Nextion/Illustrator/relier_dash-banner_.png"),
+        ], className='banner'),
+
+        html.Div([
+            html.Div([
+                html.H6("Name: {}  (Type: {})   ----> Started:  {:%Y-%m-%d, %H:%M} ".format(test_name, test_type_name,
+                                                                                            started))
+                # place filename and path of the csv file
+            ], className='row'),
+        ], className='row wind-speed-row'),
+
+        html.Div([
+            html.Div([
+                html.H3("Plots")
+            ], className='Title'),
+            html.Div([
+                dcc.Graph(id='plots'),
+            ], className='row'),
+
+            dcc.Interval(id='data-update', interval=interval, n_intervals=0),
+        ], className='row wind-speed-row'),
+    ],
+        style={'padding': '0px 10px 15px 10px',
+               'marginLeft': 'auto', 'marginRight': 'auto', "width": "900px",
+               'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)'})
 
     flow = Scatter(
         y=df['flow'],
