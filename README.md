@@ -19,16 +19,16 @@ Main features:
     
 
 ## HOW TO DEPLOY the python app in the web
-Create an account on [Heroku](https://www.heroku.com/)
 
 
+First you need to create an account on [Heroku](https://www.heroku.com/). Its free, and no credit card is required.
 The instructions below were tested in Ubuntu 18.04 
 
-Install [Heroku Cli](https://devcenter.heroku.com/articles/heroku-cli)
+### Install [Heroku Cli](https://devcenter.heroku.com/articles/heroku-cli)
     
     $ sudo snap install heroku --classic
 
-Install [Docker](https://docs.docker.com/) (CE) - Community edition
+### Install [Docker](https://docs.docker.com/) (CE) - Community edition
     
     $ sudo apt-get update
     
@@ -41,19 +41,18 @@ Install [Docker](https://docs.docker.com/) (CE) - Community edition
     $ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 
-Create an web app in Heroku
+### Create an web app in Heroku (or created an app in Heroku web site)
 
     $ sudo heroku login
-    
-        Put username(email) and password of heroku account
+       Put username(email) and password of heroku account
     
     $ sudo heroku create relier-web
     
-Create a Postgres database on the Heroku app
+### Create a Postgres database on the Heroku app (or create created in Heroku web site)
 
     $ sudo heroku addons:create heroku-postgresql:hobby-dev --app relier-web
 
-Send a docker container (with code on git-hub) to the Heroku server
+### Send a docker container (with code on git-hub) to the Heroku server
 
     $ sudo heroku login
     $ sudo heroku container:login
@@ -61,13 +60,9 @@ Send a docker container (with code on git-hub) to the Heroku server
     $ cd relier-web
     $ sudo heroku container:push web --app relier-web
     $ sudo heroku container:release web --app relier-web
-    
-To inspect eventual errors:
-
-    $ sudo heroku logs --app relier-web -t
-        ctr+z to leave
+ 
         
-To inspect the PostgreSQL database values you can create *DataClips* in Heroku
+### To inspect the PostgreSQL database values you can create *DataClips* in Heroku
 
     Open your web browser and log in at https://heroku.com
     Access https://dataclips.heroku.com
@@ -83,3 +78,9 @@ To inspect the PostgreSQL database values you can create *DataClips* in Heroku
     You can create another DataClip with the test Inputs, inserting in the text box 
     
         SELECT * FROM testinputs
+        
+            
+## Debug eventual errors
+
+    $ sudo heroku logs --app relier-web -t
+        ctr+z to leave
