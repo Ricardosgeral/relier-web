@@ -1,7 +1,18 @@
-# relier-web
-Visualization of sensor data from [relier acquisition system](https://github.com/Ricardosgeral/relier)
+#relier-web
 
+##Live streaming of test sensor data from [relier acquisition system](https://github.com/Ricardosgeral/relier)
 
+This repository contains the code and all the instructions to deploy in the web a python app to live monitor 
+the sensors recorded with **relier** acquisition system.
+
+Main features:
+
+    App code        : Python 3.6
+    Web interface   : Dash (based in Flash) and the plots are made with plotly
+    Web app cloud   : Heroku  (the app is deployed as a Docker container)
+    
+
+## HOW TO DEPLOY the python app in the web
 Create an account on [Heroku](https://www.heroku.com/)
 
 
