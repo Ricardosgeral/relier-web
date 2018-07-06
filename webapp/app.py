@@ -285,7 +285,7 @@ def plots(interval):
             b=20,
             pad=1.5 # distance between graph and axis numbers
         ),
-        legend = dict(x=-0.1, y=1.005, orientation="h"),
+        legend = dict(x=-0.1, y=1.01, orientation="h"),
         #paper_bgcolor='#7f7f7f',
         #plot_bgcolor='#f6f6f6',
     )
