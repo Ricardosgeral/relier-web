@@ -13,8 +13,9 @@ the sensors recorded with **relier** acquisition system. This should be the look
 Main features:
 
     App code        : Python 3.6
-    Web interface   : Dash (based in Flash) and the plots are made with plotly
+    Web interface   : Interactive Python Dashboards with Plotly and Dash libraries
     Web app cloud   : Heroku  (the app is deployed as a Docker container)
+    Database        : PostgreSQL is used as an addon provided by Heroku       
     
 
 ## HOW TO DEPLOY the python app in the web
@@ -37,7 +38,7 @@ Install [Docker](https://docs.docker.com/) (CE) - Community edition
       curl \
       software-properties-common
       
-    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    $ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 
 Create an web app in Heroku
@@ -50,7 +51,7 @@ Create an web app in Heroku
     
 Create a Postgres database on the Heroku app
 
-    $ heroku addons:create heroku-postgresql:hobby-dev --app relier-web
+    $ sudo heroku addons:create heroku-postgresql:hobby-dev --app relier-web
 
 Send a docker container (with code on git-hub) to the Heroku server
 
@@ -65,3 +66,20 @@ To inspect eventual errors:
 
     $ sudo heroku logs --app relier-web -t
         ctr+z to leave
+        
+To inspect the PostgreSQL database values you can create *DataClips* in Heroku
+
+    Open your web browser and log in at https://heroku.com
+    Access https://dataclips.heroku.com
+    In the top-right corner push the button "Create DataClip"
+        - give a name to the dataclip (example: Outputs) 
+        - choose the database created previously
+        - write in the textbox:
+           SELECT * FROM testdata order by id
+           
+        - Push the button "Create DataClip"
+
+    This will allow you to inspect the test results values. 
+    You can create another DataClip with the test Inputs, inserting in the text box 
+    
+        SELECT * FROM testinputs
