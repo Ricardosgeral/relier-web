@@ -1,16 +1,17 @@
-# relier-dash
-Visualization of sensor data from relier acquisition system 
+# relier-web
+Visualization of sensor data from [relier acquisition system](https://github.com/Ricardosgeral/relier)
 
 
-create an account on https://www.heroku.com/
+Create an account on [Heroku](https://www.heroku.com/)
 
 
-Tested in Ubuntu 18.04 
-install heroku  (https://devcenter.heroku.com/articles/heroku-cli)
+The instructions below were tested in Ubuntu 18.04 
+
+Install [Heroku Cli](https://devcenter.heroku.com/articles/heroku-cli)
     
     $ sudo snap install heroku --classic
 
-install docker CE (https://docs.docker.com/)
+Install [Docker](https://docs.docker.com/) (CE) - Community edition
     
     $ sudo apt-get update
     
@@ -20,21 +21,20 @@ install docker CE (https://docs.docker.com/)
       curl \
       software-properties-common
       
-    $curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    $ curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 
-Create an web app in heroku
+Create an web app in Heroku
 
     $ sudo heroku login
     
-    Put username(email) and password of heroku account
+        Put username(email) and password of heroku account
     
     $ sudo heroku create relier-web
     
 Create a Postgres database on the Heroku app
 
     $ heroku addons:create heroku-postgresql:hobby-dev --app relier-web
-
 
 Send a docker container (with code on git-hub) to the Heroku server
 
@@ -48,5 +48,4 @@ Send a docker container (with code on git-hub) to the Heroku server
 To inspect eventual errors:
 
     $ sudo heroku logs --app relier-web -t
-    
-    ctr+z to leave
+        ctr+z to leave
