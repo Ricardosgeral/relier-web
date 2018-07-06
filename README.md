@@ -64,15 +64,15 @@ The instructions below were tested in Ubuntu 18.04
         
 ### To inspect the PostgreSQL database values you can create *DataClips* in Heroku
 
-    Open your web browser and log in at https://heroku.com
-    Access https://dataclips.heroku.com
-    In the top-right corner push the button "Create DataClip"
-        - give a name to the dataclip (example: Outputs) 
-        - choose the database created previously
-        - write in the textbox:
-           SELECT * FROM testdata order by id
-           
-        - Push the button "Create DataClip"
+ Open your web browser and log in at https://heroku.com
+ Access https://dataclips.heroku.com
+ In the top-right corner push the button "Create DataClip"
+ 
+     - give a name to the dataclip (example: Outputs) 
+     - choose the database created previously
+     - write in the textbox:
+        SELECT * FROM testdata ORDER BY id
+     - Push the button "Create DataClip"
 
     This will allow you to inspect the test results values. 
     You can create another DataClip with the test Inputs, inserting in the text box 
