@@ -26,7 +26,34 @@ app.title='relier web stream'
 
 interval = 5*1000
 
+app.layout = html.Div([
+        html.Div([
+            html.H2("Sensor data streaming"),
+            html.Img(
+                src="https://raw.githubusercontent.com/Ricardosgeral/relier/master/Nextion/Illustrator/relier_dash-banner_.png"),
+        ], className='banner'),
 
+        # html.Div([
+        #     html.Div([
+        #         #html.H6()
+        #         # place filename and path of the csv file
+        #     ], className='row'),
+        # ], className='row wind-speed-row'),
+
+        html.Div([
+            html.Div([
+                html.H3("Plots")
+            ], className='Title'),
+            html.Div([
+                dcc.Graph(id='plots'),
+            ], className='row'),
+
+            dcc.Interval(id='data-update', interval=interval, n_intervals=0),
+        ], className='row wind-speed-row'),
+    ],
+        style={'padding': '0px 10px 15px 10px',
+               'marginLeft': 'auto', 'marginRight': 'auto', "width": "900px",
+               'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)'})
 
 def connect_db():
 
@@ -64,35 +91,7 @@ def plots(interval):
     started, test_name, test_type_name, df = connect_db()
 
     ###########################################
-    app.layout = html.Div([
-        html.Div([
-            html.H2("Sensor data streaming"),
-            html.Img(
-                src="https://raw.githubusercontent.com/Ricardosgeral/relier/master/Nextion/Illustrator/relier_dash-banner_.png"),
-        ], className='banner'),
 
-        html.Div([
-            html.Div([
-                html.H6("Name: {}  (Type: {})   ----> Started:  {:%Y-%m-%d, %H:%M} ".format(test_name, test_type_name,
-                                                                                            started))
-                # place filename and path of the csv file
-            ], className='row'),
-        ], className='row wind-speed-row'),
-
-        html.Div([
-            html.Div([
-                html.H3("Plots")
-            ], className='Title'),
-            html.Div([
-                dcc.Graph(id='plots'),
-            ], className='row'),
-
-            dcc.Interval(id='data-update', interval=interval, n_intervals=0),
-        ], className='row wind-speed-row'),
-    ],
-        style={'padding': '0px 10px 15px 10px',
-               'marginLeft': 'auto', 'marginRight': 'auto', "width": "900px",
-               'boxShadow': '0px 0px 5px 5px rgba(204,204,204,0.4)'})
 
     flow = Scatter(
         y=df['flow'],
@@ -182,8 +181,13 @@ def plots(interval):
 
     traces = [flow, volume, down_press, int_press, up_press, turbidity]
 
+    inputs = 'TEST: {}.csv (type - {}), started on: {:%Y-%m-%d, %H:%M}'.format(test_name, test_type_name, started)
+
+
     layout = Layout(
         height=1200,
+        title = inputs,
+        titlefont=dict(family='Arial, bold', size=16, color='black'),
         xaxis=dict(
             autorange=True,
             rangemode='nonnegative',
@@ -205,11 +209,6 @@ def plots(interval):
             title='Duration (min)',
             showaxeslabels=True,
             side= 'top',
-            #titlefont=dict(
-                #family='Arial, sans-serif',
-                #size=18,
-                #color='lightgrey'
-            #),
             mirror='allticks',
 
         ),
@@ -226,7 +225,7 @@ def plots(interval):
             fixedrange=False,
             zeroline=True,
             title='Volume (liters)',
-            domain =[0.657,0.96],
+            domain =[0.616,0.908],
             side = 'right'
 
 
@@ -257,7 +256,7 @@ def plots(interval):
             fixedrange=False,
             zeroline=False,
             title='Piezometric pressure (mmH2O)',
-            domain=[0.328, 0.632],
+            domain=[0.3083, 0.601],
             ticks='inside',
             tickcolor='#adadad',
             tickwidth=2,
@@ -272,7 +271,7 @@ def plots(interval):
             fixedrange=False,
             zeroline=False,
             title='Turbidity (NTU)',
-            domain = [0, 0.303],
+            domain = [0, 0.293],
             ticks='inside',
             tickcolor='#adadad',
             tickwidth=2,
@@ -286,7 +285,7 @@ def plots(interval):
             b=20,
             pad=1.5 # distance between graph and axis numbers
         ),
-        legend = dict(x=-0.08, y=1.075, orientation="h"),
+        legend = dict(x=-0.1, y=1.005, orientation="h"),
         #paper_bgcolor='#7f7f7f',
         #plot_bgcolor='#f6f6f6',
     )
