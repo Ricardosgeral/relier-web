@@ -20,22 +20,23 @@ password = url.password
 host = url.hostname
 port = url.port
 
-con = p.connect(
+
+app = dash.Dash()
+app.title='relier web stream'
+
+interval = 5*1000
+
+
+
+def connect_db():
+
+    con = p.connect(
             dbname=dbname,
             user=user,
             password=password,
             host=host,
             port=port
             )
-
-app = dash.Dash()
-app.title='Relier web stream'
-
-interval = 5*1000
-
-
-@app.callback(Output('plots', 'figure'), [Input('data-update', 'n_intervals')])
-def plots(interval):
 
     df_inputs = psql.read_sql('SELECT * FROM testinputs ORDER BY test_name;', con)
     df = psql.read_sql('SELECT * FROM testdata ORDER BY id;', con) # outputs
@@ -52,6 +53,15 @@ def plots(interval):
         test_type_name = 'HET'
     else:
         test_type_name = "Other"
+
+    con.close()
+    return started, test_name, test_type_name, df
+
+
+@app.callback(Output('plots', 'figure'), [Input('data-update', 'n_intervals')])
+def plots(interval):
+
+    started, test_name, test_type_name, df = connect_db()
 
     ###########################################
     app.layout = html.Div([
