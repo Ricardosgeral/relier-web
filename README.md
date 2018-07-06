@@ -3,7 +3,10 @@
 ## Live streaming of test sensor data from [relier acquisition system](https://github.com/Ricardosgeral/relier)
 
 This repository contains the code and all the instructions to deploy in the web a python app to live monitor 
-the sensors recorded with **relier** acquisition system.
+the sensors recorded with **relier** acquisition system. This should be the look of the application which is deployed to
+*https://relier-web.herokuapp.com/*
+
+
 
 Main features:
 
