@@ -1,6 +1,6 @@
-#relier-web
+# relier-web
 
-##Live streaming of test sensor data from [relier acquisition system](https://github.com/Ricardosgeral/relier)
+## Live streaming of test sensor data from [relier acquisition system](https://github.com/Ricardosgeral/relier)
 
 This repository contains the code and all the instructions to deploy in the web a python app to live monitor 
 the sensors recorded with **relier** acquisition system.
