@@ -4,7 +4,7 @@
 
 This repository contains the code and all the instructions to deploy in the web a python app to live monitor 
 the sensors recorded with **relier** acquisition system. This should be the look of the application which is deployed to
-*https://<APP_NAME>.herokuapp.com/*  (choose your APP_NAME).
+*https://<APP_NAME>.herokuapp.com/*  (choose your <APP_NAME>).
 
 
 ![relier-web](images/website.png)
@@ -12,10 +12,10 @@ the sensors recorded with **relier** acquisition system. This should be the look
 
 Main features:
 
-    App code        : Python 3.6
-    Web interface   : Interactive Python Dashboards with Plotly and Dash libraries
-    Web app cloud   : Heroku (the app is deployed as a Docker container)
-    Database        : PostgreSQL is used as an addon provided by Heroku, to store inputs and outputs of tests      
+    App programming  : Python 3.6
+    Web interface    : Interactive Python Dashboards with Plotly and Dash libraries
+    Web app cloud    : Heroku (the app is deployed as a Docker container)
+    Database for i/o : PostgreSQL is used as an addon provided by Heroku, to store inputs and outputs of tests      
     
 
 ## HOW TO DEPLOY the python app in the web
