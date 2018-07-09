@@ -29,6 +29,9 @@ Its free, and no credit card is required.
     $ sudo snap install heroku --classic
 
 ### 2 - Install [Docker](https://docs.docker.com/) (CE - Community edition)
+
+Since Pandas and numpy libraries are used in the app, the app needs to be deployed as a Docker container. 
+For [more information.](https://devcenter.heroku.com/articles/python-pip#scientific-python-users).
     
     $ sudo apt-get update
     
