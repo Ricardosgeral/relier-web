@@ -2,9 +2,9 @@
 
 ## Live streaming of test sensor data from [relier acquisition system](https://github.com/Ricardosgeral/relier)
 
-This repository contains the code and all the instructions to deploy in the web a python app to live monitor 
-the sensors recorded with **relier** acquisition system. This should be the look of the application which is deployed to
-*https://<APP_NAME>.herokuapp.com/*  (choose your <APP_NAME>).
+This repository contains the code, files and all the instructions to deploy a web app that allows live monitoring of the 
+the data sensors acquired with **relier** acquisition system. The app should have the following layout after deploy to
+*https://<APP_NAME>.herokuapp.com/*  (uou can choose your <APP_NAME>).
 
 
 ![relier-web](images/website.png)
@@ -18,7 +18,7 @@ Main features:
     Database for i/o : PostgreSQL is used as an addon provided by Heroku, to store inputs and outputs of tests      
     
 
-## HOW TO DEPLOY the python app in the web
+## HOW TO DEPLOY the python app to the web
 
 First of all, you need to create an account on [Heroku](https://www.heroku.com/). 
 Its free, and no credit card is required.
