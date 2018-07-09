@@ -40,6 +40,14 @@ app.layout = html.Div([
             html.Div([
                 dcc.Graph(id='plots'),
             ], className='row'),
+            html.Div([
+                html.H6(""),
+            ], className='row'),
+            html.Div([
+                html.H3("App developed by Ricardo Correia dos Santos | 2018"),
+                html.H3("ricardos.geral @ gmail.com"),
+
+            ], className='Title'),
 
             dcc.Interval(id='data-update', interval=interval, n_intervals=0),
         ], className='row wind-speed-row'),
