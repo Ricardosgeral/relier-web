@@ -24,7 +24,7 @@ port = url.port
 app = dash.Dash()
 app.title='relier web stream'
 
-interval = 5*1000
+interval = 4*1000  # milliseconds
 
 app.layout = html.Div([
         html.Div([
@@ -32,13 +32,6 @@ app.layout = html.Div([
             html.Img(
                 src="https://raw.githubusercontent.com/Ricardosgeral/relier/master/Nextion/Illustrator/relier_dash-banner_.png"),
         ], className='banner'),
-
-        # html.Div([
-        #     html.Div([
-        #         #html.H6()
-        #         # place filename and path of the csv file
-        #     ], className='row'),
-        # ], className='row wind-speed-row'),
 
         html.Div([
             html.Div([
@@ -199,6 +192,7 @@ def plots(interval):
             zerolinewidth=2,
             fixedrange=False,
             autotick=True,
+            tickfont = dict(size=14, color='#646566'),
             ticks='inside',
             tick0=0,
             dtick=1,
@@ -207,6 +201,7 @@ def plots(interval):
             tickcolor='#adadad',
             showticklabels=True,
             title='Duration (minutes)',
+            titlefont=dict(size=15),
             showaxeslabels=True,
             side= 'top',
             mirror='allticks',
@@ -217,6 +212,7 @@ def plots(interval):
             rangemode='nonnegative',
             showgrid=True,
             ticks='inside',
+            tickfont = dict(size=14, color='#646566'),
             tickcolor='#adadad',
             tickwidth=2,
             showline=True,
@@ -225,7 +221,8 @@ def plots(interval):
             fixedrange=False,
             zeroline=True,
             title='Volume (liters)',
-            domain =[0.616,0.908],
+            titlefont=dict(size=15),
+            domain =[0.5966,0.88],
             side = 'right'
 
 
@@ -240,9 +237,11 @@ def plots(interval):
             fixedrange=False,
             zeroline=False,
             title='Flow rate (liters/min)',
+            titlefont=dict(size=15),
             overlaying='y',
             side='left',
             ticks='inside',
+            tickfont = dict(size=14, color='#646566'),
             tickcolor='#adadad',
             tickwidth=2,
             mirror = 'False',
@@ -256,9 +255,11 @@ def plots(interval):
             fixedrange=False,
             zeroline=False,
             title='Piezometric pressure (mmH2O)',
-            domain=[0.3083, 0.601],
+            titlefont=dict(size=15),
+            domain=[0.2983, 0.582],
             ticks='inside',
             tickcolor='#adadad',
+            tickfont = dict(size=14, color='#646566'),
             tickwidth=2,
             mirror = 'allticks',
 
@@ -271,8 +272,10 @@ def plots(interval):
             fixedrange=False,
             zeroline=False,
             title='Turbidity (grams/liter)',
-            domain = [0, 0.293],
+            titlefont=dict(size=15),
+            domain = [0, 0.2833],
             ticks='inside',
+            tickfont = dict(size=14, color='#646566'),
             tickcolor='#adadad',
             tickwidth=2,
             mirror='allticks',
@@ -285,7 +288,7 @@ def plots(interval):
             b=20,
             pad=1.5 # distance between graph and axis numbers
         ),
-        legend = dict(x=-0.1, y=1.01, orientation="h"),
+        legend = dict(x=-0.1, y=1.005, orientation="h", font=dict(size=14.5)),
         #paper_bgcolor='#7f7f7f',
         #plot_bgcolor='#f6f6f6',
     )
