@@ -4,7 +4,7 @@
 
 This repository contains the code and all the instructions to deploy in the web a python app to live monitor 
 the sensors recorded with **relier** acquisition system. This should be the look of the application which is deployed to
-*https://relier-web.herokuapp.com/*
+*https://<APP_NAME>.herokuapp.com/*  (choose your APP_NAME).
 
 
 ![relier-web](images/website.png)
@@ -14,8 +14,8 @@ Main features:
 
     App code        : Python 3.6
     Web interface   : Interactive Python Dashboards with Plotly and Dash libraries
-    Web app cloud   : Heroku  (the app is deployed as a Docker container)
-    Database        : PostgreSQL is used as an addon provided by Heroku       
+    Web app cloud   : Heroku (the app is deployed as a Docker container)
+    Database        : PostgreSQL is used as an addon provided by Heroku, to store inputs and outputs of tests      
     
 
 ## HOW TO DEPLOY the python app in the web
@@ -28,7 +28,7 @@ Its free, and no credit card is required.
     
     $ sudo snap install heroku --classic
 
-### 2 - Install [Docker](https://docs.docker.com/) (CE) - Community edition
+### 2 - Install [Docker](https://docs.docker.com/) (CE - Community edition)
     
     $ sudo apt-get update
     
@@ -41,14 +41,14 @@ Its free, and no credit card is required.
     $ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 
-### 3 - Create the relier-web app in Heroku (or created an app in Heroku web site)
+### 3 - Create the app in Heroku (alternatively you can use the Heroku web site)
 
     $ sudo heroku login                                  # log in Heroku (email + password required)
-    $ sudo heroku create relier-web                      # This creates the app (which is empty)
+    $ sudo heroku create <APP_NAME>                      # This creates the app (choose your <APP_NAME>)
     
-### 4- Create a Postgres database on the Heroku app (or create created in Heroku web site)
+### 4- Create a Postgres database on the Heroku app (alternatively you can use the Heroku web site)
 
-    $ sudo heroku addons:create heroku-postgresql:hobby-dev --app relier-web   # this creates a PostgreSQL database in relier-web app 
+    $ sudo heroku addons:create heroku-postgresql:hobby-dev --app <APP_NAME>   # this creates a PostgreSQL database in the app 
 
 ### 5 - Send a docker container (with code on git-hub) to the Heroku server
 
@@ -56,8 +56,8 @@ Its free, and no credit card is required.
     $ sudo heroku container:login                         # login in Heroku container (interaction with Docker)
     $ sudo git clone github.com/Ricardosgeral/relier-web  # This clones the repository in github with all code required
     $ cd relier-web                                       # go to the directory just created
-    $ sudo heroku container:push web --app relier-web     # create a Docker image and push it to Heroku
-    $ sudo heroku container:release web --app relier-web  # release the app in the web (know the site should be running)
+    $ sudo heroku container:push web --app <APP_NAME>     # create a Docker image and push it to Heroku
+    $ sudo heroku container:release web --app <APP_NAME>  # release the app in the web (know the site should be running)
  
         
 ## To inspect the PostgreSQL database values you can create *DataClips* in Heroku
@@ -73,12 +73,12 @@ Its free, and no credit card is required.
      - Push the button "Create DataClip"
 
     This will allow you to inspect the test results values. 
-    You can create another DataClip with the test Inputs, inserting in the text box 
+    You can create another DataClip for the test Inputs, putting in the text box:
     
         SELECT * FROM testinputs
         
             
-## Debug eventual errors
+## Debug eventual errors of app after deploy
 
-    $ sudo heroku logs --app relier-web -t
+    $ sudo heroku logs --app <APP_NAME> -t
         ctr+z to leave
