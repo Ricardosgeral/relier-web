@@ -30,8 +30,9 @@ Its free, and no credit card is required.
 
 ### 2 - Install [Docker](https://docs.docker.com/) (CE - Community edition)
 
-Since Pandas and numpy libraries are used in the app, the app needs to be deployed as a Docker container. 
-For [more information.](https://devcenter.heroku.com/articles/python-pip#scientific-python-users).
+Since Pandas and numpy libraries (that use C dependencies) are used in the app, the app needs to be deployed as a Docker container. 
+For more info look [here](https://devcenter.heroku.com/articles/python-pip#scientific-python-users) and 
+[here](https://devcenter.heroku.com/articles/python-c-deps).
     
     $ sudo apt-get update
     
