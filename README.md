@@ -3,26 +3,26 @@
 ## Live streaming of test sensor data from [relier acquisition system](https://github.com/Ricardosgeral/relier)
 
 This repository contains the code, files and all the instructions to deploy a web app that allows live monitoring of the 
-the data sensors acquired with **relier** acquisition system. The app should have the following layout after deploy to
-*https://<APP_NAME>.herokuapp.com/*  (uou can choose your <APP_NAME>).
+the  sensors data acquired with **relier** acquisition system. The app should have the following layout after deploy to
+*https://<APP_NAME>.herokuapp.com/*  (you should choose your <APP_NAME>).
 
 
 ![relier-web](images/website.png)
 
 
-Main features:
+App main features:
 
-    App programming  : Python 3.6
+    Programming code : Python 3.6
     Web interface    : Interactive Python Dashboards with Plotly and Dash libraries
     Web app cloud    : Heroku (the app is deployed as a Docker container)
-    Database for i/o : PostgreSQL is used as an addon provided by Heroku, to store inputs and outputs of tests      
+    Database for i/o : PostgreSQL is used as an Heroku addon, to store inputs and outputs of tests      
     
 
 ## HOW TO DEPLOY the python app to the web
 
-First of all, you need to create an account on [Heroku](https://www.heroku.com/). 
-Its free, and no credit card is required.
-**NOTE:** The instructions below were tested in a machine with **Ubuntu 18.04**.
+First of all, you will need to create an account on [Heroku](https://www.heroku.com/). 
+Its free, and no credit card is required. It allows up to 5 simultaneous connections and a database with up to 10000 rows.
+**NOTE:** The instructions below were tested in a laptop running with **Ubuntu 18.04**.
 
 ### 1- Install [Heroku Cli](https://devcenter.heroku.com/articles/heroku-cli)
     
@@ -30,10 +30,11 @@ Its free, and no credit card is required.
 
 ### 2 - Install [Docker](https://docs.docker.com/) (CE - Community edition)
 
-Since Pandas and numpy libraries (that use C dependencies) are used in the app, the app needs to be deployed as a Docker container. 
+The app uses Pandas and Numpy (Python libraries that use C dependencies), so it needs to be deployed as a Docker container. 
 For more info look [here](https://devcenter.heroku.com/articles/python-pip#scientific-python-users) and 
 [here](https://devcenter.heroku.com/articles/python-c-deps).
-    
+To install Docker CE just copy and past the three following commands:
+ 
     $ sudo apt-get update
     
     $ sudo apt-get install \
@@ -45,12 +46,12 @@ For more info look [here](https://devcenter.heroku.com/articles/python-pip#scien
     $ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
 
-### 3 - Create the app in Heroku (alternatively you can use the Heroku web site)
+### 3 - Create the app in Heroku (alternatively you can do this in Heroku web site)
 
     $ sudo heroku login                                  # log in Heroku (email + password required)
     $ sudo heroku create <APP_NAME>                      # This creates the app (choose your <APP_NAME>)
     
-### 4- Create a Postgres database on the Heroku app (alternatively you can use the Heroku web site)
+### 4- Create a PostgreSQL database on the Heroku app (alternatively you can use the Heroku web site)
 
     $ sudo heroku addons:create heroku-postgresql:hobby-dev --app <APP_NAME>   # this creates a PostgreSQL database in the app 
 
@@ -62,6 +63,8 @@ For more info look [here](https://devcenter.heroku.com/articles/python-pip#scien
     $ cd relier-web                                       # go to the directory just created
     $ sudo heroku container:push web --app <APP_NAME>     # create a Docker image and push it to Heroku
     $ sudo heroku container:release web --app <APP_NAME>  # release the app in the web (know the site should be running)
+ 
+ NOTES: 
  
         
 ## To inspect the PostgreSQL database values you can create *DataClips* in Heroku
