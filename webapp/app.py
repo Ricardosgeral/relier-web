@@ -279,7 +279,7 @@ def plots(interval):
             linewidth=2,
             fixedrange=False,
             zeroline=False,
-            title='Turbidity (grams/liter)',
+            title='Turbidity (grams/ml)',
             titlefont=dict(size=15),
             domain = [0, 0.2833],
             ticks='inside',
