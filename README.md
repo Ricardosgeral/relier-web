@@ -45,7 +45,7 @@ To install Docker CE just copy and past the three following commands:
       
     $ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 
-
+ 
 ### 3 - Create the app in Heroku (alternatively you can do this in Heroku web site)
 
     $ sudo heroku login                                  # log in Heroku (email + password required)
