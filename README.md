@@ -44,6 +44,17 @@ To install Docker CE just copy and past the three following commands:
       software-properties-common
       
     $ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+    
+    $ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+    
+    $ sudo apt update
+    
+    $ apt-cache policy docker-ce
+    
+    $ sudo apt install docker-ce
+    
+    $ sudo systemctl status docker        # to check if docker is running
+
 
  
 ### 3 - Create the app in Heroku (alternatively you can do this in Heroku web site)
@@ -59,7 +70,7 @@ To install Docker CE just copy and past the three following commands:
 
     $ sudo heroku login                                   # login in Heroku (email + password required)
     $ sudo heroku container:login                         # login in Heroku container (interaction with Docker)
-    $ sudo git clone github.com/Ricardosgeral/relier-web  # This clones the repository in github with all code required
+    $ sudo git clone https://github.com/Ricardosgeral/relier-web  # This clones the repository in github with all code required
     $ cd relier-web                                       # go to the directory just created
     $ sudo heroku container:push web --app <APP_NAME>     # create a Docker image and push it to Heroku
     $ sudo heroku container:release web --app <APP_NAME>  # release the app in the web (know the site should be running)
