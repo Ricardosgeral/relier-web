@@ -4,7 +4,7 @@
 
 This repository contains the code, files and all the instructions to deploy a web app that allows live monitoring of the 
 the  sensors data acquired with **relier** acquisition system. The app should have the following layout after deploy to
-*https://<APP_NAME>.herokuapp.com/*  (you should choose your <APP_NAME>).
+***https://<APP_NAME>.herokuapp.com/***  (you should choose your <APP_NAME>).
 
 
 ![relier-web](images/website.png)
