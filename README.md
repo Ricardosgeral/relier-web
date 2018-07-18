@@ -28,12 +28,12 @@ Its free, and no credit card is required. It allows up to 5 simultaneous connect
     
     $ sudo snap install heroku --classic
 
-### 2 - Install [Docker](https://docs.docker.com/) (CE - Community edition)
+### 2 - Install [Docker](https://docs.docker.com/) (CE - Community Edition)
 
-The app uses Pandas and Numpy (Python libraries that use C dependencies), so it needs to be deployed as a Docker container. 
+The app uses Pandas and Numpy (Python libraries that use 'obscure' C dependencies), so it needs to be deployed as a Docker container. 
 For more info look [here](https://devcenter.heroku.com/articles/python-pip#scientific-python-users) and 
 [here](https://devcenter.heroku.com/articles/python-c-deps).
-To install Docker CE just copy and past the three following commands:
+To install Docker CE execute the following commands sequentially:
  
     $ sudo apt-get update
     
@@ -53,32 +53,45 @@ To install Docker CE just copy and past the three following commands:
     
     $ sudo apt install docker-ce
     
-    $ sudo systemctl status docker        # to check if docker is running
+    $ sudo systemctl status docker        # this command allow checking if docker is running
 
 
  
 ### 3 - Create the app in Heroku (alternatively you can do this in Heroku web site)
 
-    $ sudo heroku login                                  # log in Heroku (email + password required)
+    $ sudo heroku login                                  # log in Heroku (email and password are asked)
     $ sudo heroku create <APP_NAME>                      # This creates the app (choose your <APP_NAME>)
     
-### 4- Create a PostgreSQL database on the Heroku app (alternatively you can use the Heroku web site)
+### 4- Create a PostgreSQL database on that Heroku app (alternatively you can use the Heroku web site)
 
-    $ sudo heroku addons:create heroku-postgresql:hobby-dev --app <APP_NAME>   # this creates a PostgreSQL database in the app 
+    $ sudo heroku addons:create heroku-postgresql:hobby-dev --app <APP_NAME>   # this creates a free PostgreSQL database for the app 
 
-### 5 - Send a docker container (with code on git-hub) to the Heroku server
+### 5 - Send a docker container (with the code that is in this GitHub repository) to the Heroku server
 
     $ sudo heroku login                                   # login in Heroku (email + password required)
     $ sudo heroku container:login                         # login in Heroku container (interaction with Docker)
     $ sudo git clone https://github.com/Ricardosgeral/relier-web  # This clones the repository in github with all code required
     $ cd relier-web                                       # go to the directory just created
-    $ sudo heroku container:push web --app <APP_NAME>     # create a Docker image and push it to Heroku
+    $ sudo heroku container:push web --app <APP_NAME>     # create a Docker image and push it to Heroku (can take several minutes)
     $ sudo heroku container:release web --app <APP_NAME>  # release the app in the web (know the site should be running)
  
- NOTES: 
+ ***NOTES:*** the 'push web' command (second last) will pick the [Dockerfile](github.com/Ricardosgeral/relier-web/blob/master/Dockerfile), 
+ which, in turn, builts the Docker containers on top of heroku/miniconda:3 Docker image. 
+ It will also grab and install the python libraries listed in [requirements.txt](https://github.com/Ricardosgeral/relier-web/blob/master/webapp/requirements.txt), 
+ install pandas and numpy in miniconda framework, and configure the Web Server Gateway Interface(WSGI) using *gunicorn* python web server.  
  
+ 
+ After 'release' of the containers the app should be running in ***https://<APP_NAME>.herokuapp.com/***. When a laboratory test
+ is being carried out, results are shown in 'live streaming'. Webpage is updated every 5 seconds 
+ (this can be changed in [app.py](https://github.com/Ricardosgeral/relier-web/blob/master/webapp/app.py)).
+ If a test is not being performed, the site will show the last test carried out.
+ 
+ ***Attention***: PostgreSQL database is cleared each time a new test is started. 
+ Note that test results are stored in CSV format (either in the SD card or USB drive). 
+ For more [information](https://github.com/Ricardosgeral/relier#data-collection).
+  
         
-## To inspect the PostgreSQL database values you can create *DataClips* in Heroku
+## Inspection of PostgreSQL database values using *DataClips* in Heroku
 
  Open your web browser and log in at https://heroku.com
  Access https://dataclips.heroku.com
@@ -90,8 +103,8 @@ To install Docker CE just copy and past the three following commands:
         SELECT * FROM testdata ORDER BY id
      - Push the button "Create DataClip"
 
-    This will allow you to inspect the test results values. 
-    You can create another DataClip for the test Inputs, putting in the text box:
+   This will allow you to inspect the test results values. 
+   You can create another DataClip for the test Inputs, putting in the text box:
     
         SELECT * FROM testinputs
         
