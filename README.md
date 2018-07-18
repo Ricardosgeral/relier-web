@@ -1,4 +1,4 @@
-# relier-web
+# *relier-web*
 
 ## Live streaming of test sensor data from [relier acquisition system](https://github.com/Ricardosgeral/relier)
 
