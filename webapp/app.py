@@ -244,7 +244,7 @@ def plots(interval):
             linewidth=2,
             fixedrange=False,
             zeroline=False,
-            title='Flow rate (liters/min)',
+            title='Flow rate (liters/hour)',
             titlefont=dict(size=15),
             overlaying='y',
             side='left',
