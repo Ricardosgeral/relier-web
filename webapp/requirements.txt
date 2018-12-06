@@ -21,7 +21,7 @@ plotly==2.7.0
 psycopg2-binary==2.7.5
 python-dateutil==2.7.3
 pytz==2018.5
-requests==2.19.1
+requests==2.20
 six==1.11.0
 traitlets==4.3.2
 urllib3==1.23
