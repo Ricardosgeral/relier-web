@@ -70,19 +70,21 @@ To install Docker CE execute the following commands sequentially:
 
     $ sudo heroku login                                   # login in Heroku (email + password required)
     $ sudo heroku container:login                         # login in Heroku container (interaction with Docker)
+    $ sudo rm -R relier-web                               # Delete folder (ignore if folder does not exists)
     $ sudo git clone https://github.com/Ricardosgeral/relier-web  # This clones the repository in github with all code required
     $ cd relier-web                                       # go to the directory just created
     $ sudo heroku container:push web --app <APP_NAME>     # create a Docker image and push it to Heroku (can take several minutes)
     $ sudo heroku container:release web --app <APP_NAME>  # release the app in the web (know the site should be running)
  
  ***NOTES:*** the 'push web' command (second last) will pick the [Dockerfile](github.com/Ricardosgeral/relier-web/blob/master/Dockerfile), 
- which, in turn, builts the Docker containers on top of heroku/miniconda:3 Docker image. 
+ which, in turn, builds the Docker containers on top of heroku/miniconda:3 Docker image. 
  It will also grab and install the python libraries listed in [requirements.txt](https://github.com/Ricardosgeral/relier-web/blob/master/webapp/requirements.txt), 
  install pandas and numpy in miniconda framework, and configure the Web Server Gateway Interface(WSGI) using *gunicorn* python web server.  
  
  
- After 'release' of the containers the app should be running in ***https://<APP_NAME>.herokuapp.com/***. When a laboratory test
- is being carried out, results are shown in 'live streaming'. Webpage is updated every 5 seconds 
+ After 'release' of the containers the app should be running in ***https://<APP_NAME>.herokuapp.com/***. 
+ 
+ When a laboratory test is being carried out, results are shown in 'live streaming'. Webpage is updated every 3 seconds 
  (this can be changed in [app.py](https://github.com/Ricardosgeral/relier-web/blob/master/webapp/app.py)).
  If a test is not being performed, the site will show the last test carried out.
  
