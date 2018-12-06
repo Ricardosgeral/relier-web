@@ -24,7 +24,7 @@ port = url.port
 app = dash.Dash()
 app.title='relier web stream'
 
-interval = 4*1000  # milliseconds
+interval = 3*1000  # milliseconds
 
 app.layout = html.Div([
         html.Div([
@@ -34,9 +34,9 @@ app.layout = html.Div([
         ], className='banner'),
 
         html.Div([
-            html.Div([
-                html.H5("Plots")
-            ], className='Title'),
+#            html.Div([
+#                html.H5("Plots")
+#            ], className='Title'),
             html.Div([
                 dcc.Graph(id='plots'),
             ], className='row'),
