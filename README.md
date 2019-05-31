@@ -7,7 +7,7 @@ the  sensors data acquired with **relier** acquisition system. The app should ha
 ***https://<APP_NAME>.herokuapp.com/***  (you should choose your <APP_NAME>).
 
 
-![relier-web](images/relier_web_example1)
+![relier-web](images/relier_web_example1.PNG)
 
 
 App main features:
